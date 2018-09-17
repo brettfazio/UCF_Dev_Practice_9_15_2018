@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 public class stock {
@@ -60,17 +61,23 @@ public class stock {
 			shares = 0;
 			//hold money
 			max = Math.max(max, dp(day+1,stock,0,money));
-		}
+			
+			int oppshares = (int)((money-fee)/price[1-stock][day]);
+			max = Math.max(max, dp(day+1, 1-stock, oppshares,
+					money-(oppshares*price[1-stock][day])-fee));
+			
+		}else {
 
-		//buy stock1
-		int shares0 = (int) (money / price[0][day]);
-		if (money - shares0*price[0][day]-fee >= 0) {
-			max = Math.max(max, dp(day+1, 0, shares0, money-shares0*price[0][day]-fee));
-		}
-		//buy stock2
-		int shares1 = (int) (money / price[1][day]);
-		if (money - shares1*price[1][day]-fee >= 0) {
-			max = Math.max(max, dp(day+1, 1, shares1, money-shares1*price[1][day]-fee));
+			//buy stock1
+			int shares0 = (int) ((money-fee)/ price[0][day]);
+//			if (money - shares0*price[0][day]-fee >= 0) {
+				max = Math.max(max, dp(day+1, 0, shares0, money-shares0*price[0][day]-fee));
+//			}
+			//buy stock2
+			int shares1 = (int) ((money-fee) / price[1][day]);
+//			if (money - shares1*price[1][day]-fee >= 0) {
+				max = Math.max(max, dp(day+1, 1, shares1, money-shares1*price[1][day]-fee));
+//			}
 		}
 
 		return max;
@@ -81,7 +88,6 @@ public class stock {
 }
 
 /*
-
 2
 3 50.00 10000.00
 759.68 765.74 770.17
@@ -89,5 +95,4 @@ public class stock {
 2 5.99 29999.99
 59.99 58.99
 22.67 20.73
-
  */
